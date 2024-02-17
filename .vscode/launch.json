@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/hp/OneDrive/Desktop/DSA/Stack",
-      "program": "c:/Users/hp/OneDrive/Desktop/DSA/Stack/build/Debug/outDebug",
+      "cwd": "c:/Users/hp/OneDrive/Desktop/DSA/B.Tree",
+      "program": "c:/Users/hp/OneDrive/Desktop/DSA/B.Tree/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
