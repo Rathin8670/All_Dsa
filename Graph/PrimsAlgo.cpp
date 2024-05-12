@@ -1,17 +1,36 @@
 #include<iostream>
+#include<fstream>
 using namespace std;
 #define I 32767
-const int n=7;
-int cost[8][8]={{I,I,I,I,I,I,I,I},
-                {I,I,25,I,I,I,5,I},
-                {I,25,I,9,I,I,I,6},
-                {I,I,9,I,10,I,I,I},
-                {I,I,I,10,I,12,I,11},
-                {I,I,I,I,12,I,18,16},
-                {I,5,I,I,I,18,I,I},
-                {I,I,6,I,11,16,I,I}};
+const int n=6;
+// int cost[8][8]={{I,I,I,I,I,I,I,I},
+//                 {I,I,25,I,I,I,5,I},
+//                 {I,25,I,9,I,I,I,6},
+//                 {I,I,9,I,10,I,I,I},
+//                 {I,I,I,10,I,12,I,11},
+//                 {I,I,I,I,12,I,18,16},
+//                 {I,5,I,I,I,18,I,I},
+//                 {I,I,6,I,11,16,I,I}};
 
-int near[n+1]={I,I,I,I,I,I,I,I};     
+
+int cost[10][10];
+
+void readGraph(){
+    fstream infile;
+    infile.open("graph.txt",ios::in);
+    if(!infile){
+        cout<<"ERROR to open file\n";
+        exit(1);
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            infile>>cost[i][j];
+        }
+    }
+    infile.close();
+}               
+
+int near[n+1]={I,I,I,I,I,I,I};     
 int t[2][n-1];
 
 void prims(){
@@ -64,6 +83,7 @@ void prims(){
     }
 }
 int main(){
+    readGraph();
     prims();
     return 0;
 }

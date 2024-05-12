@@ -11,6 +11,7 @@ int p[]={10,5,15,7,6,18,3};
 int wt[]={2,3,5,7,1,4,1};
 
 struct knap arr[n]={0};
+
 void initialize(){
     for(int i=0;i<n;i++){
         arr[i].profit=p[i];

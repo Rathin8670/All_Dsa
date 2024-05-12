@@ -35,7 +35,8 @@ void Union(int u,int v){
 }
 void kruskal(){
     int i=0,mn=I;
-    int k,u,v;
+    int k,u,v,cost=0;
+    
     while(i<n-1){
         // find minimun weighted edge
         mn=I;
@@ -50,6 +51,7 @@ void kruskal(){
         if(find(u)!=find(v)){
             t[0][i]=u;
             t[1][i]=v;
+            cost+=edges[2][i];
             Union(find(u),find(v));
             i++;
         }
@@ -59,6 +61,7 @@ void kruskal(){
     for(int i=0;i<n-1;i++){
         cout<<"("<<t[0][i]<<","<<t[1][i]<<")"<<" ";
     }
+    cout<<cost;
 }
 int main(){
     kruskal();
