@@ -1,7 +1,7 @@
 #include<iostream>
 #include<fstream>
 using namespace std;
-#define I 32767
+
 struct Edge{
     int src;
     int des;
