@@ -1,89 +1,74 @@
 #include<iostream>
+#include<climits>
 #include<fstream>
 using namespace std;
-#define I 32767
-const int n=6;
-// int cost[8][8]={{I,I,I,I,I,I,I,I},
-//                 {I,I,25,I,I,I,5,I},
-//                 {I,25,I,9,I,I,I,6},
-//                 {I,I,9,I,10,I,I,I},
-//                 {I,I,I,10,I,12,I,11},
-//                 {I,I,I,I,12,I,18,16},
-//                 {I,5,I,I,I,18,I,I},
-//                 {I,I,6,I,11,16,I,I}};
 
+int n;
+int graph[10][10];
+int mst[10];
+int parent[10];
+int key[10];
 
-int cost[10][10];
 
 void readGraph(){
-    fstream infile;
-    infile.open("graph.txt",ios::in);
-    if(!infile){
-        cout<<"ERROR to open file\n";
-        exit(1);
-    }
+	fstream infile;
+	infile.open("prims.txt", ios::in);
+	infile >> n;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			infile >> graph[i][j];
+		}
+	}
+	infile.close();
+}
+void initialize(){
     for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            infile>>cost[i][j];
+        mst[i]=0;
+        key[i]=INT_MAX;
+        parent[i]=-1;
+    }
+}
+int minimunKey(){
+    int mn=INT_MAX;
+    int mnInd;
+    for(int i=0;i<n;i++){
+        if(mst[i]==0 && key[i]<mn){
+            mn=key[i];
+            mnInd=i;
         }
     }
-    infile.close();
-}               
-
-int near[n+1]={I,I,I,I,I,I,I};     
-int t[2][n-1];
-
+    return mnInd;
+}
 void prims(){
-    // find minimum vertix
-    int mn=I;
-    int u,v;
-    for(int i=1;i<=n;i++){
-        for(int j=i;j<=n;j++){
-            if(cost[i][j]<mn){
-                mn=cost[i][j];
-                u=i,v=j;
-            }
-        }
-    }
-    t[0][0]=u,t[1][0]=v;
-    near[u]=near[v]=0;
+    //It select as first vertex
+    key[0]=0;
 
-    // update the near array by u & v's adjacents who has minimum weight
-    for(int i=1;i<=n;i++){
-        if(cost[i][u]<cost[i][v] && near[i]!=0){
-            near[i]=u;
-        }else if(cost[i][u]>=cost[i][v] && near[i]!=0){
-            near[i]=v;
-        }   
-    }
-    
-    // Now repeating part will be ......
-    int k;
-    for(int i=1;i<n-1;i++){
-        mn=I;
-        for(int j=1;j<=n;j++){
-            if(near[j]!=0 && cost[j][near[j]]<mn){
-                mn=cost[j][near[j]];
-                k=j;
-            }
-        }
-        t[0][i]=k;
-        t[1][i]=near[k];
-        near[k]=0;
-
-        for(int j=1;j<=n;j++){
-            if(near[j]!=0 && cost[j][k]<cost[j][near[j]]){
-                near[j]=k;
-            }
-        }
-    }
-    // print the spanning tree
+    int edge;
     for(int i=0;i<n-1;i++){
-        cout<<"("<<t[0][i]<<","<<t[1][i]<<")"<<" ";
+        // select the vertex having minimum key and that is not added in the MST yet from the set of vertices
+        edge=minimunKey();
+        mst[edge]=1;
+        for(int v=0;v<n;v++){
+            if(graph[edge][v]&& mst[v]==0 && graph[edge][v]<key[v]){
+                parent[v]=edge;
+                key[v]=graph[edge][v];
+            }
+        }
+    }
+}
+
+void printMST(){
+    cout<<"Edges    Weight"<<endl;
+    for(int i=1;i<n;i++){
+        cout<<char('A'+parent[i])<<"--"<<char('A'+i)<<"     "<<graph[i][parent[i]]<<endl;
     }
 }
 int main(){
     readGraph();
+    initialize();
     prims();
-    return 0;
+    printMST();
+
 }

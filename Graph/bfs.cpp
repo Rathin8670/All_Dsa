@@ -1,28 +1,7 @@
 #include<iostream>
 #include<queue>
-#include<fstream>
 using namespace std;
-int n;
-int G[10][10];
-void readGraph(){
-    fstream infile;
-    infile.open("graph.txt",ios::in);
-    if(!infile){
-        cout<<"ERROR to open file\n";
-        exit(1);
-    }
-    infile>>n;
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            infile>>G[i][j];
-        }
-    }
-    infile.close();
-}
-
-void showGraph(){
-    
-}
+const int n=7;
 void bfs(int i,int g[][7]){
     queue<int>q;
     int visited[7]={0};
@@ -61,6 +40,7 @@ int main(){
                 {0,1,0,1,0,1,1},
                 {0,0,0,0,1,0,0},
                 {0,0,0,0,1,0,0}};
-    // bfs(4,G);
-    dfs(3,G,7);
+    bfs(2,G);
+    cout<<endl;
+    dfs(2,G,7);
 }

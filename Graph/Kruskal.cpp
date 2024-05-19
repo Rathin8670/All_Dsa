@@ -1,15 +1,58 @@
 #include<iostream>
+#include<fstream>
 using namespace std;
 #define I 32767
-const int n=7;
-const int e=8;
+struct Edge{
+    int src;
+    int des;
+    int wgt;
+};
+int n;
+int graph[10][10];
+int tEdge=0;
 
-int set[n+1]={-1,-1,-1,-1,-1,-1,-1,-1};
-int edges[3][e+1]={{ 1, 1,  2,  2, 3,  4,  4,  5,  5},
-                    { 2, 6,  3,  7, 4,  5,  7,  6,  7},
-                    {25, 5, 12, 10, 8, 16, 14, 20, 18}};
-int included[n+1]={0};
-int t[2][n-1];
+struct Edge arr[10];
+struct Edge mst[10];
+
+void readGraph(){
+	fstream infile;
+	infile.open("graph.txt", ios::in);
+	infile >> n;
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			infile >> graph[i][j];
+		}
+	}
+	infile.close();
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n;j++){
+            if(graph[i][j]){
+                arr[tEdge].src=i;
+                arr[tEdge].des=j;
+                arr[tEdge++].wgt=graph[i][j];
+            }
+        }
+    }
+}
+
+int set[10];
+void initialize(){
+    for(int i=0;i<n;i++){
+        set[i]=-1;
+    }
+}
+
+void sortEdge(){
+    for(int i=0;i<tEdge-1;i++){
+        for(int j=0;j<tEdge-i-1;j++){
+            if(arr[j].wgt>arr[j+1].wgt){
+                swap(arr[j],arr[j+1]);
+            }
+        }
+    }
+}
 
 int find(int u){
     int x=u,v=0;
@@ -33,37 +76,31 @@ void Union(int u,int v){
         set[u]=v;
     }
 }
+int mstEdge=0;
 void kruskal(){
-    int i=0,mn=I;
-    int k,u,v,cost=0;
-    
-    while(i<n-1){
-        // find minimun weighted edge
-        mn=I;
-        for(int j=0;j<e;j++){
-            if(included[j]==0 && edges[2][j]<mn){
-                mn=edges[2][j];
-                k=j;
-                u=edges[0][k];
-                v=edges[1][k];
+    for (int i = 0; i <tEdge; i++){
+            if (find(arr[i].src) != find(arr[i].des)){
+                Union(arr[i].src, arr[i].des);
+                mst[mstEdge].src = arr[i].src;
+                mst[mstEdge].des = arr[i].des;
+                mst[mstEdge++].wgt = arr[i].wgt;
             }
         }
-        if(find(u)!=find(v)){
-            t[0][i]=u;
-            t[1][i]=v;
-            cost+=edges[2][i];
-            Union(find(u),find(v));
-            i++;
-        }
-        included[k]=1;
-    }
-     // print the spanning tree
-    for(int i=0;i<n-1;i++){
-        cout<<"("<<t[0][i]<<","<<t[1][i]<<")"<<" ";
-    }
-    cout<<cost;
+
+}
+void showMST(){
+	int totalCost = 0;
+	for (int i = 0; i < mstEdge; i++){
+		cout << char('A' + mst[i].src) << "-" << char('A' + mst[i].des) << "->" << mst[i].wgt << endl;
+		totalCost += mst[i].wgt;
+	}
+	cout << "Total cost for this MST will be: " << totalCost << endl;
 }
 int main(){
+    readGraph();
+    initialize();
+    sortEdge();
     kruskal();
+    showMST();
     return 0;
 }
