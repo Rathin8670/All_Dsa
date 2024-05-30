@@ -51,6 +51,8 @@ int getMaxDeadline(){
 void job(){
     int size=getMaxDeadline();
     vector<int>x(size,-1);
+    // int x[size];
+    // for(int i=0;i<size;i++) x[i]=-1;
 
     int ans=0;      //profit
     for(int i=0;i<n;i++){   

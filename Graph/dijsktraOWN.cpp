@@ -1,9 +1,31 @@
 #include<iostream>
+#include<fstream>
 using namespace std;
 #define max 10
 #define inf 32667
 
-void dijsktra(int graph[max][max],int size,int start){
+int size;
+int graph[max][max];
+void readG(){
+    fstream infile;
+    infile.open("d.txt",ios::in);
+    infile>>size;
+    for(int i=0;i<size;i++){
+        for(int j=0;j<size;j++){
+            infile>>graph[i][j];
+        }
+    }
+}
+void showG(){
+    for(int i=0;i<size;i++){
+        for(int j=0;j<size;j++){
+            cout<<graph[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+void dijsktra(int start){
     int dist[max];
     int vis[max];
     int cost[max][max];
@@ -57,71 +79,12 @@ void dijsktra(int graph[max][max],int size,int start){
 
 }
 int main(){
-    int Graph[max][max], i, j, size, source;  
-    // declaring the size of the matrix    
-    size = 7;  
-
-    //declaring the nodes of graph  
-    Graph[0][0] = 0;  
-    Graph[0][1] = 4;  
-    Graph[0][2] = 0;  
-    Graph[0][3] = 0;  
-    Graph[0][4] = 0;  
-    Graph[0][5] = 8;  
-    Graph[0][6] = 0;  
-    
-    Graph[1][0] = 4;  
-    Graph[1][1] = 0;  
-    Graph[1][2] = 8;  
-    Graph[1][3] = 0;  
-    Graph[1][4] = 0;  
-    Graph[1][5] = 11;  
-    Graph[1][6] = 0;  
-    
-    Graph[2][0] = 0;  
-    Graph[2][1] = 8;  
-    Graph[2][2] = 0;  
-    Graph[2][3] = 7;  
-    Graph[2][4] = 0;  
-    Graph[2][5] = 4;  
-    Graph[2][6] = 0;  
-    
-    Graph[3][0] = 0;  
-    Graph[3][1] = 0;  
-    Graph[3][2] = 7;  
-    Graph[3][3] = 0;  
-    Graph[3][4] = 9;  
-    Graph[3][5] = 14;  
-    Graph[3][6] = 0;  
-    
-    Graph[4][0] = 0;  
-    Graph[4][1] = 0;  
-    Graph[4][2] = 0;  
-    Graph[4][3] = 9;  
-    Graph[4][4] = 0;  
-    Graph[4][5] = 10;  
-    Graph[4][6] = 2;  
-    
-    Graph[5][0] = 0;  
-    Graph[5][1] = 0;  
-    Graph[5][2] = 4;  
-    Graph[5][3] = 14;  
-    Graph[5][4] = 10;  
-    Graph[5][5] = 0;  
-    Graph[5][6] = 2;  
-    
-    Graph[6][0] = 0;  
-    Graph[6][1] = 0;  
-    Graph[6][2] = 0;  
-    Graph[6][3] = 0;  
-    Graph[6][4] = 2;  
-    Graph[6][5] = 0;  
-    Graph[6][6] = 1;  
-
+    int  source;  
     source=0;
     
-    // calling the DijkstraAlgorithm() function by passing the Graph, the number of nodes and the start node  
-    dijsktra(Graph, size, source);  
+    readG();
+    // showG();
+    dijsktra(source);  
     
     return 0;  
 }
